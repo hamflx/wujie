@@ -12,7 +12,7 @@
   "scripts": {
     "lib": "webpack build --config webpack.config.js",
     "esm": "cross-env BABEL_ENV=esm babel ./src --out-dir ./esm --extensions .ts --source-maps && tsc --emitDeclarationOnly",
-    "prepack": "bash build.sh",
+    "prepack": "node build/build.js",
     "start": "cross-env BABEL_ENV=esm babel ./src --out-dir ./esm --extensions .ts --source-maps inline --watch & tsc --emitDeclarationOnly",
     "lint": "eslint --ext .ts ./src  --fix && git add .",
     "test": "npm run test:unit && npm run test:integration",
