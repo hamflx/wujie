@@ -1,5 +1,5 @@
 {
-  "name": "wujie",
+  "name": "@hamflx/wujie",
   "version": "1.0.8",
   "description": "极致的微前端框架",
   "main": "./lib/index.js",

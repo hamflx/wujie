@@ -7,11 +7,10 @@ import { getWujieById, rawDocumentQuerySelector } from "./common";
  * 同步子应用路由到主应用路由
  */
 export function syncUrlToWindow(iframeWindow: Window): void {
-  const { sync, id, prefix } = iframeWindow.__WUJIE;
+  const { sync, prefix } = iframeWindow.__WUJIE;
   let winUrlElement = anchorElementGenerator(window.location.href);
-  const queryMap = getAnchorElementQueryMap(winUrlElement);
   // 非同步且url上没有当前id的查询参数，否则就要同步参数或者清理参数
-  if (!sync && !queryMap[id]) return (winUrlElement = null);
+  if (!sync) return null;
   const curUrl = iframeWindow.location.pathname + iframeWindow.location.search + iframeWindow.location.hash;
   let validShortPath = "";
   // 处理短路径
@@ -26,19 +25,8 @@ export function syncUrlToWindow(iframeWindow: Window): void {
   }
   // 同步
   if (sync) {
-    queryMap[id] = window.encodeURIComponent(
-      validShortPath ? curUrl.replace(prefix[validShortPath], `{${validShortPath}}`) : curUrl
-    );
-    // 清理
-  } else {
-    delete queryMap[id];
+    winUrlElement.href = curUrl;
   }
-  const newQuery =
-    "?" +
-    Object.keys(queryMap)
-      .map((key) => key + "=" + queryMap[key])
-      .join("&");
-  winUrlElement.search = newQuery;
   if (winUrlElement.href !== window.location.href) {
     window.history.replaceState(null, "", winUrlElement.href);
   }
